@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @RestController
@@ -22,18 +23,21 @@ public class ContaController {
     }
 
     @PutMapping("/depositar/{id}/{valor}")
+    @Transactional
     public ResponseEntity<ContaResponse> deposita(@PathVariable Long id, @PathVariable BigDecimal valor){
         service.depositar(id, valor);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/sacar/{id}/{valor}")
+    @Transactional
     public ResponseEntity<ContaResponse> saca(@PathVariable Long id, @PathVariable BigDecimal valor){
         service.sacar(id, valor);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/transferir/{idRemetente}/{idDestinatario}/{valor}")
+    @Transactional
     public ResponseEntity<ContaResponse> transfere(@PathVariable Long idRemetente, @PathVariable Long idDestinatario, @PathVariable BigDecimal valor){
         service.transferir(idRemetente, idDestinatario, valor);
         return new ResponseEntity<>(HttpStatus.CREATED);
