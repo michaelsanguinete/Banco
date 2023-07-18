@@ -1,6 +1,8 @@
 package br.com.banco.controller;
 
 import br.com.banco.dto.ContaResponse;
+import br.com.banco.dto.SacarEDepositarRequest;
+import br.com.banco.dto.TransferirRequest;
 import br.com.banco.service.ContaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
 @RestController
@@ -22,24 +25,24 @@ public class ContaController {
         return ResponseEntity.ok(service.retornaContaById(id));
     }
 
-    @PutMapping("/depositar/{id}/{valor}")
+    @PutMapping("/depositar")
     @Transactional
-    public ResponseEntity<ContaResponse> deposita(@PathVariable Long id, @PathVariable BigDecimal valor){
-        service.depositar(id, valor);
+    public ResponseEntity<ContaResponse> deposita(@RequestBody @Valid SacarEDepositarRequest request){
+        service.depositar(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/sacar/{id}/{valor}")
+    @PutMapping("/sacar")
     @Transactional
-    public ResponseEntity<ContaResponse> saca(@PathVariable Long id, @PathVariable BigDecimal valor){
-        service.sacar(id, valor);
+    public ResponseEntity<ContaResponse> saca(@RequestBody @Valid SacarEDepositarRequest resquest){
+        service.sacar(resquest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/transferir/{idRemetente}/{idDestinatario}/{valor}")
+    @PutMapping("/transferir")
     @Transactional
-    public ResponseEntity<ContaResponse> transfere(@PathVariable Long idRemetente, @PathVariable Long idDestinatario, @PathVariable BigDecimal valor){
-        service.transferir(idRemetente, idDestinatario, valor);
+    public ResponseEntity<ContaResponse> transfere(@RequestBody @Valid TransferirRequest request){
+        service.transferir(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
