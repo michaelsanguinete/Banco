@@ -56,6 +56,4 @@ public class TransferenciaService {
                 .map(transferencia -> mapper.map(transferencia, TransferenciaResponse.class))
                 .collect(Collectors.toList());
     }
-
-
 }

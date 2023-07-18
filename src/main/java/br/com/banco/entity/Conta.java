@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 @Entity
 @Data
@@ -17,5 +18,6 @@ public class Conta {
     @Column(name = "nome_responsavel", nullable = false)
     private String nomeResponsavel;
 
-    private BigDecimal saldo;
+    @Column(nullable = false, precision = 20, scale = 2)
+    private BigDecimal saldo = new BigDecimal(BigInteger.ZERO);
 }
