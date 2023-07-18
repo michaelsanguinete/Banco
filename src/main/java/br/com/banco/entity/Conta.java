@@ -3,6 +3,7 @@ package br.com.banco.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Data
@@ -15,4 +16,6 @@ public class Conta {
 
     @Column(name = "nome_responsavel", nullable = false)
     private String nomeResponsavel;
+
+    private BigDecimal saldo;
 }
