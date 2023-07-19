@@ -5,6 +5,7 @@ import br.com.banco.dto.SacarEDepositarRequest;
 import br.com.banco.dto.TransferirRequest;
 import br.com.banco.entity.Conta;
 import br.com.banco.entity.Transferencia;
+import br.com.banco.exception.SaldoInsuficienteException;
 import br.com.banco.repository.ContaRepository;
 import br.com.banco.repository.TransferenciaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -168,5 +169,37 @@ public class ContaServiceTest {
         ContaResponse actualResponse = contaService.retornaContaById(contaId);
 
         assertEquals(conta.getNomeResponsavel(), actualResponse.getNomeResponsavel());
+    }
+
+    @Test
+    public void testDeletaConta() {
+        // Criação dos dados de teste
+        Long contaId = 1L;
+        BigDecimal saldo = BigDecimal.valueOf(500);
+
+        // Mock do repository
+        ContaRepository repository = mock(ContaRepository.class);
+        TransferenciaRepository transferenciaRepository = mock(TransferenciaRepository.class);
+        ModelMapper mapper = mock(ModelMapper.class);
+
+        // Criação da instância de Conta
+        Conta conta = new Conta();
+        conta.setId(contaId);
+        conta.setSaldo(saldo);
+
+        // Configuração do comportamento do repository
+        when(repository.getById(contaId)).thenReturn(conta);
+
+        // Criação da instância do service
+        ContaService contaService = new ContaService(repository, transferenciaRepository, mapper);
+
+        // Execução do método a ser testado e verificação da exceção
+        assertThrows(SaldoInsuficienteException.class, () -> contaService.deletaConta(contaId));
+
+        // Verificação do método getById
+        verify(repository, times(1)).getById(contaId);
+
+        // Verificação de que o método delete não foi invocado
+        verify(repository, never()).delete(any(Conta.class));
     }
 }
