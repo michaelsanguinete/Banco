@@ -71,4 +71,10 @@ public class ContaService {
         Conta conta = repository.getById(id);
         return mapper.map(conta, ContaResponse.class);
     }
+
+    public void deletaConta(Long id){
+        Conta conta = repository.getById(id);
+        if (conta.getSaldo().compareTo(BigDecimal.ZERO) > 0) throw new SaldoInsuficienteException("A conta possui saldo, transfira ou saque todo o saldo para poder cancelar a sua conta!");
+        repository.delete(conta);
+    }
 }

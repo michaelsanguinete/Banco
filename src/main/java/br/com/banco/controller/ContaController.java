@@ -46,4 +46,10 @@ public class ContaController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ContaResponse> deletaConta(@PathVariable Long id){
+        service.deletaConta(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
